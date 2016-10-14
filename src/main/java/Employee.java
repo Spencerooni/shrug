@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Created by liamf on 13/10/2016.
  */
@@ -9,7 +11,12 @@ public class Employee {
     private String nationalInsuranceNumber;
     private String bankAccountIBAN;
     private int startingSalary;
+
+    private ArrayList<String> projects = new ArrayList<>();
+    private String jobTitle;
+
     private int employeeTypeID;
+
     private int commissionRate;
     private int totalSales;
 
@@ -53,13 +60,9 @@ public class Employee {
         this.bankAccountIBAN = bankAccountIBAN;
     }
 
-    public int getEmployeeTypeID() {
-        return employeeTypeID;
-    }
+    public int getEmployeeTypeID() {return employeeTypeID;}
 
-    public void setEmployeeTypeID(int employeeTypeID) {
-        this.employeeTypeID = employeeTypeID;
-    }
+    public void setEmployeeTypeID(int employeeTypeID) {this.employeeTypeID = employeeTypeID;}
 
     public int getCommissionRate() {
         return commissionRate;
@@ -84,4 +87,12 @@ public class Employee {
     public void setStartingSalary(int startingSalary) {
         this.startingSalary = startingSalary;
     }
+
+    public ArrayList<String> getProjects() { return projects; }
+
+    public void addProject(String project) { this.projects.add(project); }
+
+    public String getJobTitle() { return jobTitle; }
+
+    public void setJobTitle(String jobTitle) { this.jobTitle = jobTitle; }
 }

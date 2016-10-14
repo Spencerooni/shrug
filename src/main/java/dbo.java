@@ -8,7 +8,7 @@ import java.util.List;
 
 public class dbo {
 
-    public Company getCompany() {
+    public Company getCompany() throws SQLException {
         Connection conn;
 
         List<Employee> employees = new ArrayList<Employee>();
@@ -45,39 +45,52 @@ public class dbo {
                 employee.setEmployeeTypeID(employeeQuery.getInt("Employee_type_id"));
                 employee.setCommissionRate(employeeQuery.getInt("Commission_rate"));
                 employee.setTotalSales(employeeQuery.getInt("Total_sales"));
-
                 employees.add(employee);
-            }
-
-            while(projectQuery.next()){
-                Project project = new Project();
-                project.setID(projectQuery.getInt("Project_id"));
-                project.setName(projectQuery.getString("Project_name"));
-                project.setBUID(projectQuery.getInt("BU_id"));
-
-                projects.add(project);
             }
 
             while(BUQuery.next()) {
                 BU bu = new BU();
                 bu.setID(BUQuery.getInt("BU_id"));
                 bu.setName(BUQuery.getString("BU_name"));
-
                 BUs.add(bu);
             }
 
-            while(jobTitleQuery.next()) {
-                JobTitle jobTitle = new JobTitle();
-                jobTitle.setID(jobTitleQuery.getInt("Employee_type_id"));
-                jobTitle.setJobTitle(jobTitleQuery.getString("Job_title"));
+            while(projectQuery.next()){
+                Project project = new Project();
 
-                jobTitles.add(jobTitle);
+                int BUID = projectQuery.getInt("BU_id");
+                String projectName = projectQuery.getString("Project_name");
+
+                BUs.stream().filter(i -> i.getID() == BUID).forEach(i -> i.addProject(projectName));
+
+                project.setID(projectQuery.getInt("Project_id"));
+                project.setName(projectQuery.getString("Project_name"));
+                project.setBUID(projectQuery.getInt("BU_id"));
+                projects.add(project);
+            }
+
+
+
+            while(jobTitleQuery.next()) {
+                //JobTitle jobTitle = new JobTitle();
+                int EmployeeTypeID = jobTitleQuery.getInt("Employee_type_id");
+                String JobTitle = jobTitleQuery.getString("Job_title");
+
+                employees.stream().filter(i -> i.getEmployeeTypeID() == EmployeeTypeID).forEach(i -> i.setJobTitle(JobTitle));
+
+                //jobTitles.add(jobTitle);
             }
 
             while(employeeProjectQuery.next()) {
                 EmployeeProject employeeProject = new EmployeeProject();
+
+                int ProjectID = employeeProjectQuery.getInt("Project_id");
+                int EmployeeNumber = employeeProjectQuery.getInt("Employee_number");
+                String projectName = projects.stream().filter(i -> i.getID() == ProjectID).limit(1).findFirst().get().getName();
+
                 employeeProject.setProjectID(employeeProjectQuery.getInt("Project_id"));
                 employeeProject.setEmployeeNumber(employeeProjectQuery.getInt("Employee_number"));
+                employees.stream().filter(i -> i.getNumber() == EmployeeNumber).forEach(i -> i.addProject(projectName));
             }
 
             company.setBUs(BUs);
