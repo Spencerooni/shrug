@@ -100,7 +100,7 @@ public class HomeController extends Controller {
         String queryData = new Main().getHighest();
 
         Html html = Html.apply("<h1>KDB</h1><p>Acting as Manager</p>" + "<button onClick=\"window.location.href = '/';\">Back</button> <br> " +
-                "<p>"+ queryData + "</p><br><button>High Five</button>");
+                "<p>"+ queryData + "</p><br><button onClick=\"window.location.href ='https://giphy.com/gifs/high-five-cat-funny-PjRo6vL5m9212'\">High Five</button>");
 
         return ok(main.render("KDB", html));
     }
