@@ -69,8 +69,6 @@ public class dbo {
                 projects.add(project);
             }
 
-
-
             while(jobTitleQuery.next()) {
                 //JobTitle jobTitle = new JobTitle();
                 int EmployeeTypeID = jobTitleQuery.getInt("Employee_type_id");
@@ -107,5 +105,78 @@ public class dbo {
         }
 
         return company;
+    }
+    public Company insertEmployee(String name, String address, String nationalInsurance, String IBAN, float startingSalary, int employeeTypeId, int commissionRate, int totalSales)throws Exception {
+        Connection conn;
+
+        try {
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/Company?useSSL=false", "root", "password");
+
+            String sql = "INSERT INTO Employees (Employee_name, Address, National_insurance_number, Bank_account_IBAN, Starting_salary, Employee_type_id, Commission_rate, Total_sales) VALUES (\"" + name + "\", \"" + address + "\", \"" + nationalInsurance + "\", \"" + IBAN + "\", \"" + startingSalary + "\", \"" + employeeTypeId + "\", \"" + commissionRate + "\", \"" + totalSales + "\");";
+            Statement insertEmployeeStatement = conn.createStatement();
+            boolean prepStatement = insertEmployeeStatement.execute(sql);
+
+            if (prepStatement == true) {
+                System.out.println("An Employee was inserted.");
+            }
+
+        } catch (SQLException ex) {
+            // handle any errors
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        } catch (Exception e) {
+            System.out.println("e: " + e.getMessage());
+        }
+
+        Company comp = getCompany();
+        return comp;
+    }
+    public Company insertProject(String name, int buid)throws Exception {
+        Connection conn;
+
+        try {
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/Company?useSSL=false", "root", "password");
+
+            String sql = "INSERT INTO Project (Project_name, BU_id) VALUES (\"" + name + "\", \"" + buid + "\");";
+            Statement insertEmployeeStatement = conn.createStatement();
+            boolean prepStatement = insertEmployeeStatement.execute(sql);
+
+            if (prepStatement == true) {
+                System.out.println("An Employee was inserted.");
+            }
+
+        } catch (SQLException ex) {
+            // handle any errors
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        Company comp = getCompany();
+        return comp;
+    }
+
+    public Company insertEmployeeProject(int EmployeeId, int ProjectId)throws Exception {
+        Connection conn;
+
+        try {
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/Company?useSSL=false", "root", "password");
+
+            String sql = "INSERT INTO EmployeeProject (Project_name, Employee_number) VALUES (\"" + ProjectId + "\", \"" + EmployeeId + "\");";
+            Statement insertEmployeeStatement = conn.createStatement();
+            boolean prepStatement = insertEmployeeStatement.execute(sql);
+
+            if (prepStatement == true) {
+                System.out.println("An Employee was assigned to a project.");
+            }
+
+        } catch (SQLException ex) {
+            // handle any errors
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        Company comp = getCompany();
+        return comp;
     }
 }
