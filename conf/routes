@@ -4,6 +4,12 @@
 
 # An example controller showing a sample home page
 GET     /index                      controllers.HomeController.index
+GET     /employeereport             controllers.HomeController.em
+GET     /bureport                   controllers.HomeController.bu
+GET     /hr                         controllers.HomeController.hr
+GET     /fin                        controllers.HomeController.fin
+GET     /tm                         controllers.HomeController.tm
+GET     /man                        controllers.HomeController.man
 GET     /                           controllers.HomeController.login
 
 # Map static resources from the /public folder to the /assets URL path
