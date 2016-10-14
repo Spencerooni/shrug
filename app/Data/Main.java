@@ -113,19 +113,19 @@ public class Main {
         ArrayList<Project> pr = (ArrayList<Project>)comp.getProjects();
         ArrayList<Employee> em = (ArrayList<Employee>)comp.getEmployees();
 
-        String result = "Project: <select>";
+        String result = "Project: <select id='proj'>";
 
         for (Project p : pr) {
             result += "<option>" + p.getName() + "</option>";
         }
         result += "</select>";
 
-        result += " Employee: <select>";
+        result += " Employee: <select id = 'emp'>";
 
         for (Employee e : em) {
             result += "<option>" + e.getName() + "</option>";
         }
-        result += "</select> <button>add</button> <br><br>";
+        result += "</select> <button onClick=\"window.location.href = '/ETP/' + document.getElementById('proj').value + '/' + document.getElementById('emp').value\">add</button> <br><br>";
 
 
         result += "Project | Employee Count <br>";
@@ -140,11 +140,57 @@ public class Main {
             }
             result += count + "<br>";
         }
-
         result += "<br> Employees | Project Count<br>" + em.stream().map(i -> i.getName() + " " + i.getProjects().size()).collect(Collectors.joining("<br>"));
-
         return result;
+    }
 
+    public String add(String pn, String en) {
+        Company company = getComp();
+        System.out.println(en);
+        System.out.println(pn);
 
+        ArrayList<Project> pr = (ArrayList<Project>)company.getProjects();
+        ArrayList<Employee> em = (ArrayList<Employee>)company.getEmployees();
+
+        boolean employeeFlag = false;
+        boolean projectFlag = false;
+        int employeeNum = 0;
+        int projectNum = 0;
+
+        for(Employee e : em) {
+            if(e.getName().contains(en)) {
+                employeeFlag = true;
+                employeeNum = e.getNumber();
+                break;
+            }
+        }
+
+        for(Project p : pr) {
+            if(p.getName().contains(pn)) {
+                projectFlag = true;
+                projectNum = p.getID();
+                break;
+            }
+        }
+
+        if (projectFlag && employeeFlag) {
+            System.out.println(employeeNum);
+            System.out.println(projectNum);
+
+            dbo dbo = new dbo();
+            try {
+                dbo.insertEmployeeProject(employeeNum, projectNum);
+            } catch (Exception e) {}
+
+        }
+
+//        int employeeNum = company.getEmployees().stream().filter(i -> i.getName().equals(en)).mapToInt(i -> i.getNumber()).toArray()[0];
+//        int projectNum = company.getProjects().stream().filter(i -> i.getName().equals(en)).mapToInt(i -> i.getID()).toArray()[0];
+//
+//
+//        System.out.println(employeeNum);
+//        System.out.println(projectNum);
+        //doQuery(employeeNum, projectNum);
+        return null;
     }
 }

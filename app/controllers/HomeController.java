@@ -5,6 +5,7 @@ import Data.Main;
 import play.mvc.*;
 
 import play.twirl.api.Html;
+import scala.Unit;
 import views.html.*;
 
 import java.sql.Connection;
@@ -111,6 +112,19 @@ public class HomeController extends Controller {
                 "<p>"+ queryData + "</p>");
 
         return ok(main.render("KDB", html));
+    }
+
+    public Result ping(String message){
+        System.out.println(message);
+        Html html = Html.apply(message);
+        return ok(main.render("KDB", html));
+    }
+
+    public Result addEmToPr(String projectName, String employeeName) {
+        System.out.println(projectName);
+        System.out.println(employeeName);
+        String s = new Main().add(employeeName, projectName);
+        return tm();
     }
 
 }

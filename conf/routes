@@ -11,6 +11,8 @@ GET     /fin                        controllers.HomeController.fin
 GET     /tm                         controllers.HomeController.tm
 GET     /man                        controllers.HomeController.man
 GET     /                           controllers.HomeController.login
+GET     /ping/:message              controllers.HomeController.ping(message: String)
+GET     /ETP/:proj/:emp             controllers.HomeController.addEmToPr(emp: String, proj: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

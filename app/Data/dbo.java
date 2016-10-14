@@ -105,4 +105,28 @@ public class dbo {
 
         return company;
     }
+
+    public Company insertEmployeeProject(int EmployeeId, int ProjectId)throws Exception {
+        Connection conn;
+
+        try {
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/Company?useSSL=false", "root", "password");
+
+            String sql = "INSERT INTO EmployeeProject (Project_id, Employee_number) VALUES (\"" + ProjectId + "\", \"" + EmployeeId + "\");";
+            Statement insertEmployeeStatement = conn.createStatement();
+            boolean prepStatement = insertEmployeeStatement.execute(sql);
+
+            if (prepStatement == true) {
+                System.out.println("An Employee was assigned to a project.");
+            }
+
+        } catch (SQLException ex) {
+            // handle any errors
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        Company comp = getCompany();
+        return comp;
+    }
 }
