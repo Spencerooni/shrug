@@ -34,7 +34,7 @@ public class dbo {
             ResultSet jobTitleQuery = prepJobTitles.executeQuery();
             ResultSet employeeProjectQuery = prepEmployeeProject.executeQuery();
 
-            while(employeeQuery.next()){
+            while (employeeQuery.next()) {
                 Employee employee = new Employee();
                 employee.setNumber(employeeQuery.getInt("Employee_number"));
                 employee.setName(employeeQuery.getString("Employee_name"));
@@ -48,14 +48,14 @@ public class dbo {
                 employees.add(employee);
             }
 
-            while(BUQuery.next()) {
+            while (BUQuery.next()) {
                 BU bu = new BU();
                 bu.setID(BUQuery.getInt("BU_id"));
                 bu.setName(BUQuery.getString("BU_name"));
                 BUs.add(bu);
             }
 
-            while(projectQuery.next()){
+            while (projectQuery.next()) {
                 Project project = new Project();
 
                 int BUID = projectQuery.getInt("BU_id");
@@ -70,8 +70,7 @@ public class dbo {
             }
 
 
-
-            while(jobTitleQuery.next()) {
+            while (jobTitleQuery.next()) {
                 //JobTitle jobTitle = new JobTitle();
                 int EmployeeTypeID = jobTitleQuery.getInt("Employee_type_id");
                 String JobTitle = jobTitleQuery.getString("Job_title");
@@ -81,7 +80,7 @@ public class dbo {
                 //jobTitles.add(jobTitle);
             }
 
-            while(employeeProjectQuery.next()) {
+            while (employeeProjectQuery.next()) {
                 EmployeeProject employeeProject = new EmployeeProject();
 
                 int ProjectID = employeeProjectQuery.getInt("Project_id");
@@ -108,4 +107,41 @@ public class dbo {
 
         return company;
     }
+
+
+    public void insertEmployee(String name, String address, String nationalInsurance, String IBAN, float startingSalary, int employeeTypeId, int commissionRate, int totalSales)throws Exception
+
+    {
+        List<Employee> employees = new ArrayList<Employee>();
+        Connection conn;
+
+        try {
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/Company?useSSL=false", "root", "password");
+
+            String sql = "INSERT INTO Employees (Employee_name, Address, National_insurance_number, Bank_account_IBAN, Starting_salary, Employee_type_id, Commission_rate, Total_sales) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement prepStatement = conn.prepareStatement(sql);
+            ResultSet insertEmployeeQuery = prepStatement.executeQuery();
+
+            while (insertEmployeeQuery.next()) {
+                Employee employee = new Employee();
+                employee.setName(insertEmployeeQuery.getString("Employee_name"));
+                employee.setAddress(insertEmployeeQuery.getString("Address"));
+                employee.setNationalInsuranceNumber(insertEmployeeQuery.getString("National_insurance_number"));
+                employee.setBankAccountIBAN(insertEmployeeQuery.getString("Bank_account_IBAN"));
+                employee.setStartingSalary(insertEmployeeQuery.getInt("Starting_salary"));
+                employee.setEmployeeTypeID(insertEmployeeQuery.getInt("Employee_type_id"));
+                employee.setCommissionRate(insertEmployeeQuery.getInt("Commission_rate"));
+                employee.setTotalSales(insertEmployeeQuery.getInt("Total_sales"));
+                employees.add(employee);
+            }
+
+        } catch (SQLException ex) {
+            // handle any errors
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+    }
 }
+
+
