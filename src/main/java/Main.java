@@ -39,7 +39,7 @@ public class Main {
                 System.out.println("Enter the employee's sales total");
                 totalSales = scanner.nextInt();
                 System.out.println("Enter the employee's commission rate in %");
-                commissionRate = scanner.nextInt()/100;
+                commissionRate = scanner.nextInt();
             }
             else if (salesResponse.equals("no") || salesResponse.equals("n")){
                 System.out.println("Enter the employee's job title ID");
@@ -69,8 +69,10 @@ public class Main {
             for (Project x : comp.getProjects()) {
                 System.out.println(x.getName());
             }
+        }
+        catch (Exception e) {
 
-        } catch (Exception e) {}
+        }
 
     }
 }
